@@ -1,12 +1,22 @@
 import { useState } from "react";
 import { Search, Filter, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ContentCard } from "@/components/feed/ContentCard";
-import { LeaderboardCard } from "@/components/leaderboard/LeaderboardCard";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+// Update the import path if the Card component is located elsewhere, for example:
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { ContentCard } from "../components/feed/ContentCard";
+import { LeaderboardCard } from "../components/leaderboard/LeaderboardCard";
 
-export const Home = () => {
+// Add custom JSX type for appkit-button web component
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'appkit-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+    }
+  }
+}
+
+const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("hot");
 
@@ -97,32 +107,37 @@ export const Home = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6">
-        <div className="flex flex-col lg:flex-row gap-6">
+        {/* Navbar */}
+        <div className="homepage-navbar">
+          {/* Wallet Connect Button - Reown Web Component */}
+          
+        </div>
+        <div className="homepage-main">
           {/* Main Feed */}
-          <div className="flex-1 space-y-6">
+          <div className="homepage-feed">
             {/* Search & Filters */}
             <div className="space-y-4">
-              <div className="flex items-center space-x-3">
+              <div className="homepage-search">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                   <Input
                     placeholder="Search creators, content, or topics..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
                     className="pl-10 bg-secondary/50 border-border/50"
                   />
                 </div>
-                <Button variant="outline" size="icon">
+                <Button variant="ghost" size="sm">
                   <Filter className="h-4 w-4" />
                 </Button>
               </div>
 
               {/* Filter Tabs */}
-              <div className="flex items-center space-x-2 overflow-x-auto pb-2">
+              <div className="homepage-filters">
                 {filterTabs.map((tab) => (
                   <Button
                     key={tab.id}
-                    variant={activeFilter === tab.id ? "default" : "outline"}
+                    variant={activeFilter === tab.id ? "default" : "ghost"}
                     onClick={() => setActiveFilter(tab.id)}
                     className={`whitespace-nowrap ${
                       activeFilter === tab.id 
@@ -138,7 +153,7 @@ export const Home = () => {
             </div>
 
             {/* Content Feed */}
-            <div className="space-y-6">
+            <div className="homepage-content-feed">
               {mockPosts.map((post, index) => (
                 <ContentCard key={index} {...post} />
               ))}
@@ -146,12 +161,12 @@ export const Home = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="w-full lg:w-80 space-y-6">
+          <div className="homepage-sidebar">
             {/* Top Tippers Today */}
-            <Card className="glass-strong border-border/20">
+            <Card className="homepage-card glass-strong border-border/20">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center space-x-2">
+                  <CardTitle className="homepage-card-title">
                     <Sparkles className="h-5 w-5 text-primary" />
                     <span>Top Tippers Today</span>
                   </CardTitle>
@@ -168,7 +183,7 @@ export const Home = () => {
             </Card>
 
             {/* Quick Actions */}
-            <Card className="glass-strong border-border/20">
+            <Card className="homepage-card homepage-quick-actions glass-strong border-border/20">
               <CardHeader>
                 <CardTitle>Quick Actions</CardTitle>
               </CardHeader>
@@ -177,11 +192,11 @@ export const Home = () => {
                   <span className="mr-2">➕</span>
                   Create Post
                 </Button>
-                <Button variant="outline" className="w-full border-border/50">
+                <Button variant="ghost" className="w-full border-border/50">
                   <span className="mr-2">⚔️</span>
                   View Battles
                 </Button>
-                <Button variant="outline" className="w-full border-border/50">
+                <Button variant="ghost" className="w-full border-border/50">
                   <span className="mr-2">👤</span>
                   My Profile
                 </Button>
@@ -193,3 +208,5 @@ export const Home = () => {
     </div>
   );
 };
+
+export default Home;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Header } from "@/components/layout/Header";
-import { Home } from "./Home";
+import  Home from "./Home";
 import { Battles } from "./Battles";
 import { Profile } from "./Profile";
 import { Create } from "./Create";
