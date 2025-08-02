@@ -1,11 +1,14 @@
+import { Filter, Search, Sparkles } from "lucide-react";
 import { useState } from "react";
-import { Search, Filter, Sparkles } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 // Update the import path if the Card component is located elsewhere, for example:
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { ContentCard } from "../components/feed/ContentCard";
 import { LeaderboardCard } from "../components/leaderboard/LeaderboardCard";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+// import { Header } from "@radix-ui/react-accordion";
+// import { Header } from "../components/layout/Header";
+
 
 // Add custom JSX type for appkit-button web component
 declare global {
@@ -19,6 +22,25 @@ declare global {
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("hot");
+  // const [activeTab, setActiveTab] = useState("home");
+  // const [photoURL, setPhotoURL] = useState<string | undefined>(undefined);
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const unsubscribe = auth.onAuthStateChanged((user) => {
+  //     setPhotoURL(user?.photoURL ?? undefined);
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
+
+  // const handleTabChange = (tab: string) => {
+  //   setActiveTab(tab);
+  //   // Example navigation logic for tabs
+  //   if (tab === "home") navigate("/home");
+  //   if (tab === "battles") navigate("/battles");
+  //   if (tab === "profile") navigate("/profile");
+  //   if (tab === "create") navigate("/create");
+  // };
 
   const mockPosts = [
     {
@@ -106,15 +128,16 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* <Header
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        photoURL={photoURL}
+      /> */}
       <div className="container mx-auto px-4 py-6">
-        {/* Navbar */}
-        <div className="homepage-navbar">
-          {/* Wallet Connect Button - Reown Web Component */}
-          
-        </div>
-        <div className="homepage-main">
+    
+        <div className="homepage-main flex flex-col lg:flex-row gap-6">
           {/* Main Feed */}
-          <div className="homepage-feed">
+          <div className="homepage-feed flex-1 space-y-6">
             {/* Search & Filters */}
             <div className="space-y-4">
               <div className="homepage-search">
@@ -131,8 +154,6 @@ const Home = () => {
                   <Filter className="h-4 w-4" />
                 </Button>
               </div>
-
-              {/* Filter Tabs */}
               <div className="homepage-filters">
                 {filterTabs.map((tab) => (
                   <Button
@@ -161,7 +182,7 @@ const Home = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="homepage-sidebar">
+          <div className="homepage-sidebar w-full lg:w-80 space-y-6">
             {/* Top Tippers Today */}
             <Card className="homepage-card glass-strong border-border/20">
               <CardHeader className="pb-4">
@@ -177,7 +198,9 @@ const Home = () => {
               </CardHeader>
               <CardContent className="space-y-3">
                 {mockLeaderboard.map((user, index) => (
-                  <LeaderboardCard key={index} {...user} />
+                  <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+                    <LeaderboardCard key={index} {...user} hideTier />
+                  </div>
                 ))}
               </CardContent>
             </Card>
@@ -207,6 +230,5 @@ const Home = () => {
       </div>
     </div>
   );
-};
-
+}
 export default Home;

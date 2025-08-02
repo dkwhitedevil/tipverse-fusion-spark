@@ -1,7 +1,7 @@
-import { TrendingUp, TrendingDown, Crown, Flame, Shield } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Crown, Flame, Shield, TrendingDown, TrendingUp } from "lucide-react";
 
 interface LeaderboardCardProps {
   rank: number;
@@ -18,9 +18,10 @@ interface LeaderboardCardProps {
     trend: "up" | "down" | "same";
   };
   badges: string[];
+  hideTier?: boolean;
 }
 
-export const LeaderboardCard = ({ rank, user, stats, badges }: LeaderboardCardProps) => {
+export const LeaderboardCard = ({ rank, user, stats, badges, hideTier }: LeaderboardCardProps) => {
   const getRankIcon = () => {
     switch (rank) {
       case 1:
@@ -61,70 +62,55 @@ export const LeaderboardCard = ({ rank, user, stats, badges }: LeaderboardCardPr
   };
 
   return (
-    <Card className={`glass-strong border-border/20 hover:border-border/40 transition-all duration-300 ${
-      rank <= 3 ? 'ring-1 ring-primary/20 shadow-glow' : ''
-    }`}>
+    <Card className={`border-2 border-zinc-200 dark:border-zinc-800 shadow-sm rounded-xl bg-card transition-all duration-300 ${rank <= 3 ? 'ring-1 ring-primary/20 shadow-glow' : ''} ${hideTier ? 'min-w-[260px] max-w-[340px] w-full' : ''}`}>
       <CardContent className="p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+        <div className="flex flex-col gap-4 items-stretch">
+          <div className="flex gap-4 items-center">
             {/* Rank */}
-            <div className="flex items-center space-x-2 w-12">
-              <span className={`text-2xl font-bold ${rank <= 3 ? 'gradient-text' : 'text-muted-foreground'}`}>
-                #{rank}
-              </span>
+            <div className="flex flex-col items-center justify-center w-12 shrink-0">
+              <span className={`text-2xl font-bold ${rank <= 3 ? 'gradient-text' : 'text-muted-foreground'}`}>#{rank}</span>
               {getRankIcon()}
             </div>
-
-            {/* User Info */}
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <Avatar className="w-12 h-12 ring-2 ring-primary/20">
-                  <AvatarImage src={user.avatar} />
-                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold text-primary-foreground">
-                  {user.level}
-                </div>
+            {/* Avatar */}
+            <div className="relative shrink-0">
+              <Avatar className="w-12 h-12 ring-2 ring-primary/20">
+                <AvatarImage src={user.avatar} />
+                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold text-primary-foreground">
+                {user.level}
               </div>
-              
-              <div>
-                <div className="flex items-center space-x-2">
-                  <h3 className="font-semibold text-foreground">{user.name}</h3>
+            </div>
+            {/* User Info */}
+            <div className="flex flex-col flex-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="font-semibold text-foreground break-words">{user.name}</h3>
+                {!hideTier && (
                   <Badge variant="outline" className={`${getTierColor()} border-current`}>
                     {user.tier}
                   </Badge>
-                </div>
-                <p className="text-sm text-muted-foreground">@{user.username}</p>
-                
-                {/* Badges */}
-                <div className="flex items-center space-x-1 mt-1">
-                  {badges.slice(0, 3).map((badge, index) => (
-                    <span key={index} className="text-xs">
-                      {badge}
-                    </span>
-                  ))}
-                  {badges.length > 3 && (
-                    <span className="text-xs text-muted-foreground">+{badges.length - 3}</span>
-                  )}
-                </div>
+                )}
+              </div>
+              <p className="text-sm text-muted-foreground break-words">@{user.username}</p>
+              <div className="flex items-center flex-wrap gap-1 mt-1">
+                {badges.slice(0, 3).map((badge, index) => (
+                  <span key={index} className="text-xs">{badge}</span>
+                ))}
+                {badges.length > 3 && (
+                  <span className="text-xs text-muted-foreground">+{badges.length - 3}</span>
+                )}
               </div>
             </div>
           </div>
-
           {/* Stats */}
-          <div className="text-right">
-            <div className="flex items-center space-x-2 justify-end mb-1">
-              <span className="text-2xl font-bold text-foreground">
-                {stats.xp.toLocaleString()} XP
-              </span>
+          <div className="flex flex-row gap-4 items-center justify-between w-full">
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-bold text-foreground">{stats.xp.toLocaleString()} XP</span>
               {getTrendIcon()}
             </div>
-            
-            <div className="flex items-center space-x-2 justify-end">
+            <div className="flex items-center gap-2">
               <Flame className="h-4 w-4 text-orange-500" />
-              <span className="text-sm text-muted-foreground">
-                {stats.streak} day streak
-              </span>
+              <span className="text-sm text-muted-foreground">{stats.streak} day streak</span>
             </div>
           </div>
         </div>

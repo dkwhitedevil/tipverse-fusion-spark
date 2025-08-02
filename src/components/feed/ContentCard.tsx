@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { Heart, MessageCircle, Share, DollarSign, Clock, TrendingUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
 import { TipModal } from "@/components/modals/TipModal";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { DollarSign, Heart, MessageCircle, Share } from "lucide-react";
+import { useState } from "react";
 
 interface ContentCardProps {
   author: {
@@ -75,57 +75,14 @@ export const ContentCard = ({ author, content, stats }: ContentCardProps) => {
         {content.image && (
           <div className="mb-4 rounded-lg overflow-hidden">
             <img 
-              src={content.image} 
+              src={"/CoverPage.jpg"} // Correct path for public folder
               alt="Content"
               className="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
             />
           </div>
         )}
 
-        {/* Stats Bar */}
-        <div className="bg-gradient-secondary rounded-lg p-4 mb-4 space-y-3">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div>
-              <div className="flex items-center justify-center space-x-1">
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Estimated Reach</span>
-              </div>
-              <p className="text-xl font-bold text-foreground">{stats.estimatedReach.toLocaleString()}</p>
-            </div>
-            <div>
-              <div className="flex items-center justify-center space-x-1">
-                <span className="text-sm text-muted-foreground">Viral Potential</span>
-              </div>
-              <p className={`text-xl font-bold ${viralColors[stats.viralPotential]}`}>
-                {stats.viralPotential}
-              </p>
-            </div>
-            <div>
-              <div className="flex items-center justify-center space-x-1">
-                <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Tip Window</span>
-              </div>
-              <p className="text-xl font-bold text-warning">{stats.timeRemaining}</p>
-            </div>
-            <div>
-              <div className="flex items-center justify-center space-x-1">
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Est. Earnings</span>
-              </div>
-              <p className="text-xl font-bold text-success">{stats.estimatedEarnings}</p>
-            </div>
-          </div>
-          
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground mb-1">
-              {stats.tips} tips • Min: 0.01 USDC
-            </p>
-            <div className="flex items-center justify-center space-x-2">
-              <span className="text-sm text-muted-foreground">24h remaining</span>
-              <div className="w-2 h-2 rounded-full bg-warning animate-pulse"></div>
-            </div>
-          </div>
-        </div>
+        
 
         {/* Actions */}
         <div className="flex items-center justify-between pt-2">
