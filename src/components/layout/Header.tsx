@@ -1,7 +1,8 @@
-import { Bell, MoreHorizontal, Wallet } from "lucide-react";
+import { MoreHorizontal, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 
 interface HeaderProps {
   activeTab: string;
@@ -58,12 +59,7 @@ export const Header = ({ activeTab, onTabChange }: HeaderProps) => {
             </div>
 
             {/* Notifications */}
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <Badge variant="destructive" className="absolute -top-1 -right-1 w-5 h-5 text-xs p-0 flex items-center justify-center">
-                3
-              </Badge>
-            </Button>
+            <NotificationCenter />
 
             {/* More Menu */}
             <Button variant="ghost" size="icon">

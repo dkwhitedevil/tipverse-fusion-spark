@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
+import { TipModal } from "@/components/modals/TipModal";
 
 interface ContentCardProps {
   author: {
@@ -16,6 +17,7 @@ interface ContentCardProps {
     text?: string;
     image?: string;
     timestamp: string;
+    timeRemaining: string;
   };
   stats: {
     tips: number;
@@ -145,13 +147,20 @@ export const ContentCard = ({ author, content, stats }: ContentCardProps) => {
 
           <Button 
             onClick={() => setShowTipModal(true)}
-            className="bg-gradient-primary hover:shadow-glow transition-all duration-300 font-semibold"
+            variant="gaming"
           >
             <DollarSign className="h-4 w-4 mr-2" />
             Tip
           </Button>
         </div>
       </CardContent>
+      
+      <TipModal
+        isOpen={showTipModal}
+        onClose={() => setShowTipModal(false)}
+        creator={author}
+        content={content}
+      />
     </Card>
   );
 };

@@ -21,7 +21,8 @@ export const Home = () => {
       content: {
         text: "The Future of Decentralized Gaming: Why Web3 Will Transform How We Play",
         image: "/api/placeholder/600/300",
-        timestamp: "4h 58m"
+        timestamp: "4h 58m",
+        timeRemaining: "19h 2m"
       },
       stats: {
         tips: 2450,

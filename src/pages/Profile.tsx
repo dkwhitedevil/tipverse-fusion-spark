@@ -9,6 +9,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export const Profile = () => {
   const [activeTab, setActiveTab] = useState("overview");
 
+  const userStats = {
+    totalEarnings: "2,450",
+    totalTips: "156",
+    xp: 12750,
+    level: 25,
+    rank: 47,
+    followers: 1234,
+    following: 567,
+    streak: 12,
+    winRate: 78,
+    battlesWon: 23,
+    nextLevelXP: 15000,
+    currentLevelXP: 12000
+  };
+
   const userProfile = {
     name: "CryptoCreator",
     username: "cryptocreator",
