@@ -1,0 +1,157 @@
+import { useState } from "react";
+import { Heart, MessageCircle, Share, DollarSign, Clock, TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
+
+interface ContentCardProps {
+  author: {
+    name: string;
+    username: string;
+    avatar: string;
+    verified?: boolean;
+  };
+  content: {
+    text?: string;
+    image?: string;
+    timestamp: string;
+  };
+  stats: {
+    tips: number;
+    tipAmount: string;
+    comments: number;
+    timeRemaining: string;
+    viralPotential: "High" | "Medium" | "Low";
+    estimatedReach: number;
+    estimatedEarnings: string;
+  };
+}
+
+export const ContentCard = ({ author, content, stats }: ContentCardProps) => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [showTipModal, setShowTipModal] = useState(false);
+
+  const viralColors = {
+    High: "text-success",
+    Medium: "text-warning", 
+    Low: "text-muted-foreground"
+  };
+
+  return (
+    <Card className="glass-strong border-border/20 hover:border-border/40 transition-all duration-300 group">
+      <CardContent className="p-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            <Avatar className="w-12 h-12 ring-2 ring-primary/20">
+              <AvatarImage src={author.avatar} />
+              <AvatarFallback>{author.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div>
+              <div className="flex items-center space-x-2">
+                <h3 className="font-semibold text-foreground">{author.name}</h3>
+                {author.verified && (
+                  <Badge variant="secondary" className="bg-primary/10 text-primary">
+                    ✓
+                  </Badge>
+                )}
+              </div>
+              <p className="text-sm text-muted-foreground">@{author.username} • {content.timestamp}</p>
+            </div>
+          </div>
+          <Button variant="ghost" size="icon">
+            <Share className="h-4 w-4" />
+          </Button>
+        </div>
+
+        {/* Content */}
+        {content.text && (
+          <p className="text-foreground mb-4 leading-relaxed">{content.text}</p>
+        )}
+        
+        {content.image && (
+          <div className="mb-4 rounded-lg overflow-hidden">
+            <img 
+              src={content.image} 
+              alt="Content"
+              className="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+        )}
+
+        {/* Stats Bar */}
+        <div className="bg-gradient-secondary rounded-lg p-4 mb-4 space-y-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div>
+              <div className="flex items-center justify-center space-x-1">
+                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Estimated Reach</span>
+              </div>
+              <p className="text-xl font-bold text-foreground">{stats.estimatedReach.toLocaleString()}</p>
+            </div>
+            <div>
+              <div className="flex items-center justify-center space-x-1">
+                <span className="text-sm text-muted-foreground">Viral Potential</span>
+              </div>
+              <p className={`text-xl font-bold ${viralColors[stats.viralPotential]}`}>
+                {stats.viralPotential}
+              </p>
+            </div>
+            <div>
+              <div className="flex items-center justify-center space-x-1">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Tip Window</span>
+              </div>
+              <p className="text-xl font-bold text-warning">{stats.timeRemaining}</p>
+            </div>
+            <div>
+              <div className="flex items-center justify-center space-x-1">
+                <DollarSign className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Est. Earnings</span>
+              </div>
+              <p className="text-xl font-bold text-success">{stats.estimatedEarnings}</p>
+            </div>
+          </div>
+          
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground mb-1">
+              {stats.tips} tips • Min: 0.01 USDC
+            </p>
+            <div className="flex items-center justify-center space-x-2">
+              <span className="text-sm text-muted-foreground">24h remaining</span>
+              <div className="w-2 h-2 rounded-full bg-warning animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center justify-between pt-2">
+          <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsLiked(!isLiked)}
+              className={`${isLiked ? 'text-red-500' : 'text-muted-foreground'} hover:text-red-500`}
+            >
+              <Heart className={`h-4 w-4 mr-2 ${isLiked ? 'fill-current' : ''}`} />
+              <span className="text-sm">{isLiked ? 'Liked' : 'Like'}</span>
+            </Button>
+            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+              <MessageCircle className="h-4 w-4 mr-2" />
+              <span className="text-sm">{stats.comments}</span>
+            </Button>
+          </div>
+
+          <Button 
+            onClick={() => setShowTipModal(true)}
+            className="bg-gradient-primary hover:shadow-glow transition-all duration-300 font-semibold"
+          >
+            <DollarSign className="h-4 w-4 mr-2" />
+            Tip
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};

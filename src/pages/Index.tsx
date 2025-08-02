@@ -1,12 +1,32 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { Header } from "@/components/layout/Header";
+import { Home } from "./Home";
+import { Battles } from "./Battles";
+import { Profile } from "./Profile";
+import { Create } from "./Create";
 
 const Index = () => {
+  const [activeTab, setActiveTab] = useState("home");
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "home":
+        return <Home />;
+      case "battles":
+        return <Battles />;
+      case "profile":
+        return <Profile />;
+      case "create":
+        return <Create />;
+      default:
+        return <Home />;
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Header activeTab={activeTab} onTabChange={setActiveTab} />
+      {renderContent()}
     </div>
   );
 };
